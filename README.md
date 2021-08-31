@@ -3,8 +3,7 @@
 ## User Stories
 
 -As a user, I want to know, for how many questions I am playing.
--As a player, I want to see the clues.
--As a player, a timer should be seen.
+-As a player, I want to see the choices.
 -As a player, I want to know my score
 -As a player, in the end, there must be option of playing again or quit.
 
