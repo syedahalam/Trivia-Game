@@ -10,13 +10,15 @@ const allAnswerChoices = document.querySelector('.choices'); //event listener
 const answerChoiceA = document.querySelector('#A');
 const answerChoiceB = document.querySelector('#B');
 const answerChoiceC = document.querySelector('#C');
-//getting scores
-const scoreContainer = document.querySelector('.score-container');
-
 const h1 = document.querySelector('#heading');
+//getting scores
+const showScore = document.querySelector('.score-container');
+//restart
+const playAgain = document.querySelector('#restart');
+//quit
+const quit = document.querySelector('#quit');
 
 //questions
-
 let questions = [
 	{
 		imgQuestion: './images/jump.png',
@@ -77,7 +79,7 @@ let questions = [
 	{
 		imgQuestion: './images/sugar.png',
 		question: 'Cats are?',
-		choiceA: 'Herbivor',
+		choiceA: 'Herbivore',
 		choiceB: 'Carnivore',
 		choiceC: 'Omnivore',
 		correctAnswer: 'Carnivore',
@@ -104,21 +106,44 @@ let questions = [
 
 const lastQuestion = questions.length - 1;
 let activeQuestion = 0;
-let count = 0;
-let timer = 0;
-const questionTime = 10;
-let score = 0; //10 sec
+let score = 0;
+
+/////////////////////////////// Event Listeners ///////////////////////////////
 
 //start button event listener
 playBtn.addEventListener('click', startQuiz); //calling startQuiz function
 
+//check correct answer
 allAnswerChoices.addEventListener('click', (event) => {
 	let userAnswer = event.target.innerText; //getting values form innerText
-
 	checkAnswer(userAnswer);
 });
 
+//restarting the game
+playAgain.addEventListener('click',() => {
+	showScore.style.visibility = "hidden";
+	playAgain.style.visibility = 'hidden';
+	quit.style.visibility = 'hidden';
+	question.style.visibility = "visible";
+	quiz.style.display= 'grid';
+	startQuiz()
+});
+
+
+//////////////////////////////////////////////////////
+// quit.addEventListener('click',()=>{
+// 		document.body.style.background='/images/intro.png'
+// }
+
+
+/////////////////////////// functions ////////////////////////
+
 function startQuiz() {
+	activeQuestion = 0;
+	score = 0; 
+	console.log("Start Quiz!")
+	console.log(activeQuestion);
+
 	playBtn.style.display = 'none';
 	h1.style.display = 'none';
 	rendorQuestion();
@@ -127,33 +152,49 @@ function startQuiz() {
 
 //rendor question function-> display on the page
 function rendorQuestion() {
-	let q = questions[activeQuestion]; //grabbing the question from array
-
-	let bodyImg = `url('${q.imgQuestion}')`;
-	document.body.style.backgroundImage = bodyImg;
-
+	
+	let q = questions[activeQuestion]; //grabbing the active question from array
 	question.innerHTML = '<p>' + q.question + '</p>'; //creating html element
 	answerChoiceA.innerHTML = q.choiceA;
 	answerChoiceB.innerHTML = q.choiceB;
 	answerChoiceC.innerHTML = q.choiceC;
+
+	let bodyImg = `url('${q.imgQuestion}')`;
+	document.body.style.backgroundImage = bodyImg;
 }
 // check answer function
 function checkAnswer(answer) {
 	if (answer === questions[activeQuestion].correctAnswer) {
+		// console.log('correctAnswer');
+		alert('Your answer is correct');
+		score += 10;
+	} else {
+		// console.log('Incorrect')
+		alert('Your answer is wrong');
 	}
-	//correctAnswer()
 	nextQuestion();
 }
 
 //function for next question
 function nextQuestion() {
-	if (activeQuestion <= lastQuestion) {
+	if (activeQuestion < lastQuestion) {
 		activeQuestion++;
 		rendorQuestion();
 	} else {
-		showScore();
+		showYourScore();
 	}
 }
-//correct answer function
+//function to show score
+function showYourScore() {
+	// hide quiz container 
+	quiz.style.display = 'none';
+	document.body.style.backgroundImage = '';
 
-function correctAnswer() {}
+	showScore.style.visibility = 'visible';
+
+	playAgain.style.visibility = 'visible';
+	quit.style.visibility = 'visible';
+
+	showScore.innerHTML = `<h2> Your total score : ${score}</h2>`;
+	showScore.innerHTML += `<h2> You answered : ${score / 10} out of ${questions.length} questions.</h2>`;
+}
