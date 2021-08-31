@@ -131,9 +131,12 @@ playAgain.addEventListener('click',() => {
 
 
 //////////////////////////////////////////////////////
-// quit.addEventListener('click',()=>{
-// 		document.body.style.background='/images/intro.png'
-// }
+quit.addEventListener('click',() => {
+	showScore.style.visibility = "hidden";
+	playAgain.style.visibility = 'hidden';
+	quit.style.visibility = 'hidden';
+		
+})
 
 
 /////////////////////////// functions ////////////////////////
@@ -141,13 +144,14 @@ playAgain.addEventListener('click',() => {
 function startQuiz() {
 	activeQuestion = 0;
 	score = 0; 
-	console.log("Start Quiz!")
-	console.log(activeQuestion);
 
 	playBtn.style.display = 'none';
 	h1.style.display = 'none';
-	rendorQuestion();
 	quiz.style.visibility = 'visible';
+	
+	rendorQuestion();
+
+	
 }
 
 //rendor question function-> display on the page
@@ -162,10 +166,10 @@ function rendorQuestion() {
 	let bodyImg = `url('${q.imgQuestion}')`;
 	document.body.style.backgroundImage = bodyImg;
 }
+
 // check answer function
 function checkAnswer(answer) {
 	if (answer === questions[activeQuestion].correctAnswer) {
-		// console.log('correctAnswer');
 		alert('Your answer is correct');
 		score += 10;
 	} else {
